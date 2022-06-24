@@ -1,6 +1,8 @@
 <?php
 require __DIR__ . '/core/database.php';
 
+// Verbindung erstellen
+
 $vocabs = [
     [
         'word' => 'Hello',
@@ -42,17 +44,19 @@ $vocabIndex = 0;
 if (isset($_GET['vocab'])) {
     $vocabIndex = $_GET['vocab'];
     if ($vocabIndex == 0) {
-        $previousVocab = $vocabs[count ($vocabs) - 1]; 
+        $previousVocab = $vocabs[count($vocabs) - 1];
     } else {
         $previousVocab = $vocabs[$vocabIndex - 1];
     }
+    if (isset($_POST['skip'])) {
+        $messageboxClass ='warning';
+        $messageboxText = 'Schade! Richtig wäre: ' . $previousVocab['translation'];
+    } elseif (isset($_POST['translation']) && strtolower($previousVocab['translation']) == strtolower($_POST['translation'])) {
 
-    if (isset($_POST['translation']) && $previousVocab['translation'] == $_POST['translation']) {
-        
         $messageboxClass = 'success';
         $messageboxText = 'Richtig!';
     } else {
-        
+
         $messageboxClass = 'danger';
         $messageboxText = 'Falsch! Richtig wäre: ' . $previousVocab['translation'];
     }
@@ -150,28 +154,29 @@ $vocabToDisplay = $vocabs[$vocabIndex];
 
         <main>
             <h1 class="visually-hidden">Heroes examples</h1>
-            <form action="/index.php?vocab=<?php if ($vocabIndex == count($vocabs) - 1) {
+            <form action="/index.php?vocab=<?php
+if ($vocabIndex == count($vocabs) - 1) {
     echo 0;
 } else {
     echo $vocabIndex + 1;
 }
 ?>" method="post">
                 <div class="px-4 py-5 my-5 text-center w-50 mx-auto">
-<?php if (isset($messageboxClass)) { ?>
+                    <?php if (isset($messageboxClass)) { ?>
                         <div class="alert alert-<?php echo $messageboxClass; ?> d-flex align-items-center" role="alert">
                             <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label=":"><use xlink:href="#exclamation-triangle-fill"/></svg>
                             <div> <?php echo $messageboxText ?>
 
                             </div>
                         </div>
-<?php } ?>
+                    <?php } ?>
                     <h1 class="display-5 fw-bold"> <?php echo $vocabToDisplay['word']; ?></h1>
                     <div class="col-lg-6 mx-auto">
-                        
+
                         <label for="translation">Übersetzung:</label>
                         <input type="text" name="translation" value="">
                         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-2">
-                            <button type="submit" class="btn btn-outline-secondary btn-lg px-4">überspringen</button>
+                            <button name="skip" value="1" type="submit" class="btn btn-outline-secondary btn-lg px-4">überspringen</button>
                             <button type="submit" class="btn btn-primary btn-lg px-4 gap-3">weiter</button>
                         </div>
                     </div>
