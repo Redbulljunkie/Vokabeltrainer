@@ -85,9 +85,19 @@ require __DIR__ . '/core/init.php';
         <link href="/assets/dist/css/heroes.css" rel="stylesheet">
     </head>
     <body>
+        <div class="container">
+            <header class="d-flex justify-content-center py-3">
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a href="/index.php?page=manage" class="nav-link <?php echo (isset($_GET['page']) && $_GET['page'] == 'manage' ? 'active' : ''); ?>">Vokabeln</a></li>
+                    <li class="nav-item"><a href="/index.php?page=trainer" class="nav-link <?php echo (isset($_GET['page']) && $_GET['page'] == 'trainer' ? 'active' : ''); ?>">Trainer</a></li>
 
+
+
+                </ul>
+            </header>
+        </div>
         <main>
-            <?php require __DIR__.'/pages/'.$page.'/content.php'; ?>
+            <?php require __DIR__ . '/pages/' . $page . '/content.php'; ?>
 
         </main>
 
